@@ -5,7 +5,7 @@ var tableData = data;
 var tbody=d3.select('tbody');
 
 // loop through data & add to table
-data.forEach((sighting)=>{
+var addData = data.forEach((sighting)=>{
     var row=tbody.append('tr'); 
     Object.entries(sighting).forEach(([key,value]) => {
         var cell=row.append('td');
@@ -22,24 +22,23 @@ var button = d3.select('#filter-btn');
 var form = d3.select('#datetime');
 
 //event handlers
-button.on('click', runEnter);
-form.on('submit', runEnter);
-
-function runEnter() {
-
+button.on('click', () => {
     //prevent page from refreshing
     d3.event.preventDefault();
-
+    //find rows based on user input
+    var inputDate=form.property("value").trim();
+    var filterData=tableData.filter(tableData=>tableData.datetime === inputDate);
     // Select the input element and get the raw HTML node
-    $tbody.html('');
-
-    // Get the value property of the input element
-
-
-    // Use the form input to filter the data by date
+    tbody.html('');
+    //display user row selected
+    let response = {
+        filterData
+    }
+    if(response.filterData.length !==0) {
+        addData(filterData);
+    }
+        else {
+            tbody.append('tr').append('td').text("No sightings found")
+        }
 }
-
-
-
-
-
+);
